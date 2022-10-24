@@ -24,6 +24,9 @@ function App() {
       </button>
     </li>`;
       $('#espresso-menu-list').insertAdjacentHTML('beforeend', menuItemTemplate(espressoMenuName));
+
+      const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
+      $('.menu-count').innerText = `총 ${menuCount}개`;
     }
   });
 }
