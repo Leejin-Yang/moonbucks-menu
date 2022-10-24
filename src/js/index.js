@@ -47,6 +47,14 @@ function App() {
 
     addEspressoMenuName();
   });
+
+  $('#espresso-menu-list').addEventListener('click', (e) => {
+    if (e.target.classList.contains('menu-edit-button')) {
+      const $menuName = e.target.closest('li').querySelector('.menu-name');
+      const newMenuName = prompt('메뉴명을 수정해주세요', $menuName.innerText);
+      $menuName.innerText = newMenuName;
+    }
+  });
 }
 
 App();
