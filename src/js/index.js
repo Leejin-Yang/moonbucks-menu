@@ -5,11 +5,7 @@ function App() {
     e.preventDefault();
   });
 
-  $('#espresso-menu-name').addEventListener('keypress', (e) => {
-    if (e.key !== 'Enter') {
-      return;
-    }
-
+  const addEspressoMenuName = () => {
     const espressoMenuName = $('#espresso-menu-name').value;
 
     if (!espressoMenuName) {
@@ -38,6 +34,18 @@ function App() {
     $('.menu-count').innerText = `총 ${menuCount}개`;
 
     $('#espresso-menu-name').value = '';
+  };
+
+  $('#espresso-menu-submit-button').addEventListener('click', () => {
+    addEspressoMenuName();
+  });
+
+  $('#espresso-menu-name').addEventListener('keypress', (e) => {
+    if (e.key !== 'Enter') {
+      return;
+    }
+
+    addEspressoMenuName();
   });
 }
 
