@@ -35,13 +35,13 @@ class App {
   }
 
   bindEventListeners() {
-    $('#espresso-menu-form').addEventListener('submit', (e) => {
+    $('#menu-form').addEventListener('submit', (e) => {
       e.preventDefault();
     });
 
-    $('#espresso-menu-submit-button').addEventListener('click', this.addMenuName);
+    $('#menu-submit-button').addEventListener('click', this.addMenuName);
 
-    $('#espresso-menu-name').addEventListener('keypress', (e) => {
+    $('#menu-name').addEventListener('keypress', (e) => {
       if (e.key !== 'Enter') {
         return;
       }
@@ -49,7 +49,7 @@ class App {
       this.addMenuName();
     });
 
-    $('#espresso-menu-list').addEventListener('click', (e) => {
+    $('#menu-list').addEventListener('click', (e) => {
       if (e.target.classList.contains('menu-edit-button')) {
         this.updateMenuName(e);
       }
@@ -67,6 +67,8 @@ class App {
 
       const { categoryName } = e.target.dataset;
       this.currentCategory = categoryName;
+      $('#category-title').innerText = `${e.target.innerText} 메뉴 관리`;
+      this.renderHTML();
     });
   }
 
@@ -93,28 +95,28 @@ class App {
   </li>`,
       )
       .join('');
-    $('#espresso-menu-list').innerHTML = template;
+    $('#menu-list').innerHTML = template;
 
     this.updateMenuCount();
   }
 
   updateMenuCount() {
-    const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
+    const menuCount = $('#menu-list').querySelectorAll('li').length;
     $('.menu-count').innerText = `총 ${menuCount}개`;
   }
 
   addMenuName() {
-    const espressoMenuName = $('#espresso-menu-name').value;
+    const menuName = $('#menu-name').value;
 
-    if (!espressoMenuName) {
+    if (!menuName) {
       alert('값을 입력해주세요.');
       return;
     }
 
-    this.menu[this.currentCategory].push({ name: espressoMenuName });
+    this.menu[this.currentCategory].push({ name: menuName });
     store.setLocalStorage(this.menu);
     this.renderHTML();
-    $('#espresso-menu-name').value = '';
+    $('#menu-name').value = '';
   }
 
   updateMenuName(e) {
