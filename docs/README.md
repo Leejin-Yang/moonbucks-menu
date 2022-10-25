@@ -31,7 +31,7 @@
 
 ### localStorage read & write
 
-- [ ] localStorage에 데이터를 저장한다.
+- [x] localStorage에 데이터를 저장한다.
 - [ ] localStorage에 있는 데이터를 읽어온다.
 
 ### 종류별 메뉴판 관리
