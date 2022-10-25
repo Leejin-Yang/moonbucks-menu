@@ -1,13 +1,5 @@
-const $ = (selector) => document.querySelector(selector);
-
-const store = {
-  setLocalStorage(menu) {
-    localStorage.setItem('menu', JSON.stringify(menu));
-  },
-  getLocalStorage() {
-    return JSON.parse(localStorage.getItem('menu'));
-  },
-};
+import { $ } from './utils/dom.js';
+import store from './store/index.js';
 
 class App {
   constructor() {
@@ -113,7 +105,7 @@ class App {
   }
 
   updateMenuCount() {
-    const menuCount = $('#menu-list').querySelectorAll('li').length;
+    const menuCount = this.menu[this.currentCategory].length;
     $('.menu-count').innerText = `총 ${menuCount}개`;
   }
 
@@ -137,16 +129,15 @@ class App {
     const newMenuName = prompt('메뉴명을 수정해주세요', $menuName.innerText);
     this.menu[this.currentCategory][menuId].name = newMenuName;
     store.setLocalStorage(this.menu);
-    $menuName.innerText = newMenuName;
+    this.renderHTML();
   }
 
   removeMenuName(e) {
     if (confirm('정말 삭제하시겠습니까?')) {
       const { menuId } = e.target.closest('li').dataset;
       this.menu[this.currentCategory].splice(menuId, 1);
-      e.target.closest('li').remove();
       store.setLocalStorage(this.menu);
-      this.updateMenuCount();
+      this.renderHTML();
     }
   }
 

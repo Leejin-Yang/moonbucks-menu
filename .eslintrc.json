@@ -17,6 +17,7 @@
     "no-alert": "off", // alert 사용
     "no-restricted-globals": "off", // 전역 변수 집합 허용
     "class-methods-use-this": "off",
-    "no-new": "off"
+    "no-new": "off",
+    "import/extensions": ["error", "always", { "ignorePackages": true }]
   }
 }
