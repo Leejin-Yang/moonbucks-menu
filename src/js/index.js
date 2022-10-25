@@ -16,6 +16,32 @@ class App {
     this.bindEventListeners();
   }
 
+  bindEventListeners() {
+    $('#espresso-menu-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+    });
+
+    $('#espresso-menu-submit-button').addEventListener('click', this.addMenuName);
+
+    $('#espresso-menu-name').addEventListener('keypress', (e) => {
+      if (e.key !== 'Enter') {
+        return;
+      }
+
+      this.addMenuName();
+    });
+
+    $('#espresso-menu-list').addEventListener('click', (e) => {
+      if (e.target.classList.contains('menu-edit-button')) {
+        this.updateMenuName(e);
+      }
+
+      if (e.target.classList.contains('menu-remove-button')) {
+        this.removeMenuName(e);
+      }
+    });
+  }
+
   updateMenuCount() {
     const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
     $('.menu-count').innerText = `총 ${menuCount}개`;
@@ -71,35 +97,12 @@ class App {
 
   removeMenuName(e) {
     if (confirm('정말 삭제하시겠습니까?')) {
+      const { menuId } = e.target.closest('li').dataset;
+      this.menu.splice(menuId, 1);
       e.target.closest('li').remove();
+      store.setLocalStorage(this.menu);
       this.updateMenuCount();
     }
-  }
-
-  bindEventListeners() {
-    $('#espresso-menu-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-    });
-
-    $('#espresso-menu-submit-button').addEventListener('click', this.addMenuName);
-
-    $('#espresso-menu-name').addEventListener('keypress', (e) => {
-      if (e.key !== 'Enter') {
-        return;
-      }
-
-      this.addMenuName();
-    });
-
-    $('#espresso-menu-list').addEventListener('click', (e) => {
-      if (e.target.classList.contains('menu-edit-button')) {
-        this.updateMenuName(e);
-      }
-
-      if (e.target.classList.contains('menu-remove-button')) {
-        this.removeMenuName(e);
-      }
-    });
   }
 }
 
