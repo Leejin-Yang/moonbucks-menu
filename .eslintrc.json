@@ -15,6 +15,8 @@
     "no-console": "error", // console 사용 x
     "no-unused-vars": "error", // 사용하지 않는 변수, 함수 및 함수 매개변수 error
     "no-alert": "off", // alert 사용
-    "no-restricted-globals": "off" // 전역 변수 집합 허용
+    "no-restricted-globals": "off", // 전역 변수 집합 허용
+    "class-methods-use-this": "off",
+    "no-new": "off"
   }
 }

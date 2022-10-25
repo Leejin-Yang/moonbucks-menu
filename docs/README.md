@@ -31,7 +31,10 @@
 
 ### localStorage read & write
 
-- [x] localStorage에 데이터를 저장한다.
+- [ ] localStorage에 데이터를 저장한다.
+  - [x] 메뉴를 추가할 때
+  - [x] 메뉴를 수정할 때
+  - [ ] 메뉴를 삭제할 때
 - [ ] localStorage에 있는 데이터를 읽어온다.
 
 ### 종류별 메뉴판 관리
@@ -52,3 +55,7 @@
 - [ ] 품절 버튼을 추가한다.
 - [ ] 품절 버튼 클릭 이벤트를 받고, sold-out class를 추가한다.
 - [ ] localStorage에 상태값을 저장한다.
+
+### 리팩토링
+
+- [x] 함수 -> 클래스

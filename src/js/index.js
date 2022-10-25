@@ -9,15 +9,19 @@ const store = {
   },
 };
 
-function App() {
-  this.menu = [];
+class App {
+  constructor() {
+    this.menu = [];
 
-  const updateMenuCount = () => {
+    this.bindEventListeners();
+  }
+
+  updateMenuCount() {
     const menuCount = $('#espresso-menu-list').querySelectorAll('li').length;
     $('.menu-count').innerText = `총 ${menuCount}개`;
-  };
+  }
 
-  const addMenuName = () => {
+  addMenuName() {
     const espressoMenuName = $('#espresso-menu-name').value;
 
     if (!espressoMenuName) {
@@ -29,7 +33,10 @@ function App() {
     store.setLocalStorage(this.menu);
     const template = this.menu
       .map(
-        (item) => `<li class="menu-list-item d-flex items-center py-2">
+        (
+          item,
+          index,
+        ) => `<li data-menu-id="${index}" class="menu-list-item d-flex items-center py-2">
     <span class="w-100 pl-2 menu-name">${item.name}</span>
     <button
       type="button"
@@ -48,47 +55,52 @@ function App() {
       .join('');
     $('#espresso-menu-list').innerHTML = template;
 
-    updateMenuCount();
+    this.updateMenuCount();
 
     $('#espresso-menu-name').value = '';
-  };
+  }
 
-  const updateMenuName = (e) => {
+  updateMenuName(e) {
+    const { menuId } = e.target.closest('li').dataset;
     const $menuName = e.target.closest('li').querySelector('.menu-name');
     const newMenuName = prompt('메뉴명을 수정해주세요', $menuName.innerText);
+    this.menu[menuId].name = newMenuName;
+    store.setLocalStorage(this.menu);
     $menuName.innerText = newMenuName;
-  };
+  }
 
-  const removeMenuName = (e) => {
+  removeMenuName(e) {
     if (confirm('정말 삭제하시겠습니까?')) {
       e.target.closest('li').remove();
-      updateMenuCount();
+      this.updateMenuCount();
     }
-  };
+  }
 
-  $('#espresso-menu-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-  });
+  bindEventListeners() {
+    $('#espresso-menu-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+    });
 
-  $('#espresso-menu-submit-button').addEventListener('click', addMenuName);
+    $('#espresso-menu-submit-button').addEventListener('click', this.addMenuName);
 
-  $('#espresso-menu-name').addEventListener('keypress', (e) => {
-    if (e.key !== 'Enter') {
-      return;
-    }
+    $('#espresso-menu-name').addEventListener('keypress', (e) => {
+      if (e.key !== 'Enter') {
+        return;
+      }
 
-    addMenuName();
-  });
+      this.addMenuName();
+    });
 
-  $('#espresso-menu-list').addEventListener('click', (e) => {
-    if (e.target.classList.contains('menu-edit-button')) {
-      updateMenuName(e);
-    }
+    $('#espresso-menu-list').addEventListener('click', (e) => {
+      if (e.target.classList.contains('menu-edit-button')) {
+        this.updateMenuName(e);
+      }
 
-    if (e.target.classList.contains('menu-remove-button')) {
-      removeMenuName(e);
-    }
-  });
+      if (e.target.classList.contains('menu-remove-button')) {
+        this.removeMenuName(e);
+      }
+    });
+  }
 }
 
-App();
+new App();
