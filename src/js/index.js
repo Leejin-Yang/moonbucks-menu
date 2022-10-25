@@ -11,15 +11,23 @@ const store = {
 
 class App {
   constructor() {
-    this.menu = [];
+    this.menu = {
+      espresso: [],
+      frappuccino: [],
+      blended: [],
+      teavana: [],
+      desert: [],
+    };
+    this.currentCategory = 'espresso';
 
     this.init();
   }
 
   init() {
-    const local = store.getLocalStorage();
-    if (local.length > 0) {
-      this.menu = local;
+    const localStorageMenu = store.getLocalStorage();
+
+    if (localStorageMenu) {
+      this.menu = localStorageMenu;
     }
 
     this.renderHTML();
@@ -50,10 +58,20 @@ class App {
         this.removeMenuName(e);
       }
     });
+
+    $('nav').addEventListener('click', (e) => {
+      const isCategoryButton = e.target.classList.contains('cafe-category-name');
+      if (!isCategoryButton) {
+        return;
+      }
+
+      const { categoryName } = e.target.dataset;
+      this.currentCategory = categoryName;
+    });
   }
 
   renderHTML() {
-    const template = this.menu
+    const template = this.menu[this.currentCategory]
       .map(
         (
           item,
@@ -93,7 +111,7 @@ class App {
       return;
     }
 
-    this.menu.push({ name: espressoMenuName });
+    this.menu[this.currentCategory].push({ name: espressoMenuName });
     store.setLocalStorage(this.menu);
     this.renderHTML();
     $('#espresso-menu-name').value = '';
@@ -103,7 +121,7 @@ class App {
     const { menuId } = e.target.closest('li').dataset;
     const $menuName = e.target.closest('li').querySelector('.menu-name');
     const newMenuName = prompt('메뉴명을 수정해주세요', $menuName.innerText);
-    this.menu[menuId].name = newMenuName;
+    this.menu[this.currentCategory][menuId].name = newMenuName;
     store.setLocalStorage(this.menu);
     $menuName.innerText = newMenuName;
   }
@@ -111,7 +129,7 @@ class App {
   removeMenuName(e) {
     if (confirm('정말 삭제하시겠습니까?')) {
       const { menuId } = e.target.closest('li').dataset;
-      this.menu.splice(menuId, 1);
+      this.menu[this.currentCategory].splice(menuId, 1);
       e.target.closest('li').remove();
       store.setLocalStorage(this.menu);
       this.updateMenuCount();
