@@ -52,10 +52,16 @@ class App {
     $('#menu-list').addEventListener('click', (e) => {
       if (e.target.classList.contains('menu-edit-button')) {
         this.updateMenuName(e);
+        return;
       }
 
       if (e.target.classList.contains('menu-remove-button')) {
         this.removeMenuName(e);
+        return;
+      }
+
+      if (e.target.classList.contains('menu-sold-out-button')) {
+        this.soldOutMenu(e);
       }
     });
 
@@ -79,20 +85,26 @@ class App {
           item,
           index,
         ) => `<li data-menu-id="${index}" class="menu-list-item d-flex items-center py-2">
-    <span class="w-100 pl-2 menu-name">${item.name}</span>
-    <button
-      type="button"
-      class="bg-gray-50 text-gray-500 text-sm mr-1 menu-edit-button"
-    >
-      수정
-    </button>
-    <button
-      type="button"
-      class="bg-gray-50 text-gray-500 text-sm menu-remove-button"
-    >
-      삭제
-    </button>
-  </li>`,
+        <span class="${item.soldOut ? 'sold-out' : ''}  w-100 pl-2 menu-name">${item.name}</span>
+        <button
+          type="button"
+          class="bg-gray-50 text-gray-500 text-sm mr-1 menu-sold-out-button"
+        >
+          품절
+        </button>
+        <button
+          type="button"
+          class="bg-gray-50 text-gray-500 text-sm mr-1 menu-edit-button"
+        >
+          수정
+        </button>
+        <button
+          type="button"
+          class="bg-gray-50 text-gray-500 text-sm menu-remove-button"
+        >
+          삭제
+        </button>
+      </li>`,
       )
       .join('');
     $('#menu-list').innerHTML = template;
@@ -136,6 +148,14 @@ class App {
       store.setLocalStorage(this.menu);
       this.updateMenuCount();
     }
+  }
+
+  soldOutMenu(e) {
+    const { menuId } = e.target.closest('li').dataset;
+    this.menu[this.currentCategory][menuId].soldOut =
+      !this.menu[this.currentCategory][menuId].soldOut;
+    store.setLocalStorage(this.menu);
+    this.renderHTML();
   }
 }
 
